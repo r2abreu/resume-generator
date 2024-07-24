@@ -1,13 +1,13 @@
 <template>
   <fieldset>
     <legend>
-      <h3 class="my-2">Profressional Summary</h3>
+      <h3 class="my-2">Craft a Compelling Professional Summary</h3>
     </legend>
     <UDivider class="mb-5" />
     <label for="form-full-name"
-      >Write 2-4 short & energetic sentences to interest the reader! Mention
-      your role, experience & most importantly - your biggest achievements, best
-      qualities and skills.</label
+      >Compose 2-4 concise and dynamic sentences to captivate the reader!
+      Showcase your role, experience, and, most importantly, your notable
+      accomplishments, outstanding qualities, and valuable skills.</label
     >
     <UTextarea id="form-name" type="text" placeholder="John Doe" />
   </fieldset>

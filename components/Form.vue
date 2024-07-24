@@ -2,6 +2,7 @@
   <form>
     <FormPersonalDetails />
     <FormProfessionalSummary />
+    <FormEmploymentHistory />
   </form>
 </template>
 
