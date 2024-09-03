@@ -7,36 +7,36 @@
     <div class="grid grid-cols-2 gap-4">
       <label for="form-full-name">Full Name</label>
       <UInput
-        v-model="props.modelValue.name"
+        v-model="model.name"
         id="form-name"
         type="text"
         placeholder="John Doe"
       />
       <label for="form-email">Email</label>
       <UInput
-        v-model="props.modelValue.email"
+        v-model="model.email"
         id="form-email"
         type="email"
         placeholder="john@doe.com"
       />
       <label for="form-phone">Phone</label>
       <UInput
-        v-model="props.modelValue.phone"
+        v-model="model.phone"
         id="form-phone"
         type="tel"
         placeholder="622056260"
       />
       <label for="form-country">Country</label>
       <UInput
-        v-model="props.modelValue.country"
+        v-model="model.country"
         id="form-country"
         type="text"
         placeholder="United Kingdom"
       />
-      <label for="form-City">City</label>
+      <label for="form-city">City</label>
       <UInput
-        v-model="props.modelValue.city"
-        id="form-City"
+        v-model="model.city"
+        id="form-city"
         type="text"
         placeholder="London"
       />
@@ -47,41 +47,25 @@
 <script lang="ts" setup>
 import { z } from "zod";
 
-interface Props {
-  modelValue: z.infer<typeof schema>;
-}
-
-interface Emits {
-  (event: "update:modelValue", value: Props['modelValue']): void;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  modelValue: () => schema.parse(undefined),
+const model = defineModel<z.infer<typeof schema>>({
+  default: () => schema.parse(undefined),
 });
-
-const emit = defineEmits<Emits>();
-
-watch(
-  () => props.modelValue,
-  () => {
-    emit("update:modelValue", props.modelValue);
-  }
-);
 </script>
 
 <script lang="ts">
-// Schema
-export const schema = z.object({
-  name: z.string(),
-  email: z.string(),
-  phone: z.string(),
-  country: z.string(),
-  city: z.string(),
-}).default({
-  name: '',
-  email: '',
-  phone: '',
-  country: '',
-  city: '',
-})
+export const schema = z
+  .object({
+    name: z.string(),
+    email: z.string(),
+    phone: z.string(),
+    country: z.string(),
+    city: z.string(),
+  })
+  .default({
+    name: "",
+    email: "",
+    phone: "",
+    country: "",
+    city: "",
+  });
 </script>
