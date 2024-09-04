@@ -4,37 +4,60 @@
       <h3 class="mt-2">Employment History</h3>
     </legend>
     <UDivider class="mb-5" />
-    <div
-      v-for="n in employmentsNumber"
-      class="grid grid-cols-2 gap-4 border-2 p-3 border-green-700 rounded-sm mt-4"
-    >
-      <label for="title">Job title</label>
-      <UInput :id="`title-${n}`" type="text" placeholder="Software Engineer" />
-      <label for="employer">Employer</label>
-      <UInput :id="`employer-${n}`" type="text" placeholder="Google" />
-      <label for="city">City</label>
-      <UInput :id="`city-${n}`" type="text" placeholder="Mountain View" />
-      <label for="description">Description</label>
-      <UTextarea :id="`description-${n}`" placeholder="Describe your role" />
-      <label for="start-date">Start Date</label>
-      <DatePicker :id="`start-date-${n}`" />
-      <label for="end-date">End Date</label>
-      <DatePicker :id="`end-date-${n}`" />
-    </div>
+    <FormEmploymentHistoryInstance
+      v-for="(instance, index) of model.instances"
+      :index
+      v-model="model.instances[index]"
+    />
   </fieldset>
-  <button @click.prevent="addSection">Add one more section</button>
+  <button @click.prevent="addEmploymentInstance">Add one more section</button>
 </template>
 
 <script setup lang="ts">
-const employmentsNumber = ref(0);
+import { z } from "zod";
+
 const toast = useToast();
 
-function addSection() {
+const model = defineModel<z.infer<typeof schema>>({
+  default: () => schema.parse(undefined),
+});
+
+function addEmploymentInstance() {
   const MAX_SECTIONS = 5;
-  if (employmentsNumber.value >= MAX_SECTIONS) return;
-  employmentsNumber.value++;
+  if (model.value.instances.length >= MAX_SECTIONS) return;
+  const defaultInstance = instanceSchema.parse(undefined);
+
+  model.value.instances.push(defaultInstance);
+
   toast.add({
     title: "Section added",
-  })
+  });
 }
+</script>
+
+<script lang="ts">
+export const instanceSchema = z
+  .object({
+    title: z.string(),
+    employer: z.string(),
+    city: z.string(),
+    description: z.string(),
+    startDate: z.date(),
+    endDate: z.date(),
+  })
+  .default({
+    title: "",
+    employer: "",
+    city: "",
+    description: "",
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+export const schema = z
+  .object({
+    instances: z.array(instanceSchema),
+  })
+  .default({
+    instances: [],
+  });
 </script>
