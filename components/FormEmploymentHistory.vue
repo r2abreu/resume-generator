@@ -9,6 +9,7 @@
       :index
       v-model="model.instances[index]"
     />
+    {{  model.instances }}
   </fieldset>
   <button @click.prevent="addEmploymentInstance">Add one more section</button>
 </template>

@@ -1,10 +1,10 @@
 <template>
-  <UPopover :popper="{ placement: 'bottom-start' }">
-    <UButton :label="format(date, 'd MMM, yyy')" />
+  <UPopover data-testid="date-picker" :popper="{ placement: 'bottom-start' }">
+    <UButton :label="format(model, 'd MMM, yyy')" />
     <template #panel="{ close }">
       <VCalendarDatePicker
-        v-if="date"
-        v-model="date"
+        v-if="model"
+        v-model="model"
         @dayclick="close"
         v-bind="{ ...attrs }"
       />
@@ -14,10 +14,13 @@
 
 <script setup lang="ts">
 import { format } from "date-fns";
+import { z } from 'zod';
 import { DatePicker as VCalendarDatePicker } from "v-calendar";
 import "v-calendar/dist/style.css";
 
-const date = ref(new Date());
+const model = defineModel<z.infer<typeof schema>>({
+  default: () => schema.parse(undefined),
+});
 
 const attrs = {
   transparent: true,
@@ -54,3 +57,7 @@ const attrs = {
   --vc-accent-900: rgb(var(--color-primary-900));
 }
 </style>
+
+<script lang="ts">
+export const schema = z.date().default(new Date());
+</script>
